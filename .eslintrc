@@ -1,0 +1,29 @@
+{
+  "root": true,
+  "env": {
+    "es6": true,
+    "jest": true,
+    "jest/globals": true
+  },
+  "extends": ["prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "plugins": ["prettier", "@typescript-eslint", "jest", "import", "unused-imports"],
+  "ignorePatterns": ["**/dist/**"],
+  "rules": {
+    "prettier/prettier": ["error", { "trailingComma": "all" }],
+    "unused-imports/no-unused-imports": "warn",
+    "import/no-duplicates": "warn",
+    "import/no-dynamic-require": "off",
+    "import/prefer-default-export": "off",
+    "no-unused-vars": "warn",
+    "global-require": "off",
+    "no-plusplus": "off",
+    "no-shadow": "off",
+    "camelcase": "off",
+    "@typescript-eslint/no-explicit-any": "error"
+  }
+}

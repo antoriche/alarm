@@ -1,0 +1,32 @@
+{
+  "name": "alarm",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "(cd app && npm run test) && (cd api && npx npm run test)",
+    "install": "(cd api && npm install) && (cd app && npm install) && (cd shared && npm install)",
+    "start": "(cd shared && npx ttab npm run dev) && (cd api && npx ttab npm start) & (cd app && npx ttab npm start)",
+    "clean": "(cd shared && rm -rf node_modules && rm -rf dist) && (cd api && rm -rf node_modules) && (cd app && rm -rf node_modules) && npm i"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jest": "^27.6.3",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-unused-imports": "^3.1.0",
+    "prettier": "3.2.5",
+    "prettier-eslint": "^16.2.0",
+    "tslint": "^6.1.3",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^0.0.1-alpha.0"
+  },
+  "bundleDependencies": [
+    "typescript"
+  ]
+}

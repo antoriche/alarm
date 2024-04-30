@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es2015",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": ["./src/**/*"],
+  "references": [
+    {
+      "path": "../api",
+      "rootDir": "../api/src/rpc"
+    }
+  ]
+}

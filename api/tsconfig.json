@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "es5",
+    "outDir": ".build",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "lib": ["es2015"],
+    "rootDir": "./",
+    "skipLibCheck": true,
+    "composite": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./src/setup/functionAppService.js"]
+}

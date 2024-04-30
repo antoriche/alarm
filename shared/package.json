@@ -1,0 +1,19 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "prebuild": "npm i && (tsc > /dev/null || true)",
+    "build": "tsc -b",
+    "dev": "tsc -b -w"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "typescript": "^5.0.4"
+  }
+}
