@@ -7,9 +7,10 @@ The project is requested to use typescript, react as well as a node backend and 
 
 ## 🧭 Getting started
 
+.env files are commited for the sake of the interview
+
 1. Clone this repository
-2. ~~Copy files env.sample into .env (in app and api folders) and fill with appropriates values~~ (commited for the sake of the interview)
-3. run `npm install` in root folder
+2. run `npm install` in root folder
 
 ### 💻 Run the project
 

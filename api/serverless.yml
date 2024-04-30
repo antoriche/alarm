@@ -17,10 +17,6 @@ provider:
   lambdaHashingVersion: "20201221"
   timeout: 30
 
-  apiGateway:
-    restApiId: ${env:API_GATEWAY_ID, ""}
-    restApiRootResourceId: ${env:API_GATEWAY_ROOT_ID, ""}
-
 functions:
   hello:
     handler: src/hello.handler

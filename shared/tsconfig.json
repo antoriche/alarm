@@ -11,11 +11,5 @@
     "allowJs": true,
     "resolveJsonModule": true
   },
-  "include": ["./src/**/*"],
-  "references": [
-    {
-      "path": "../api",
-      "rootDir": "../api/src/rpc"
-    }
-  ]
+  "include": ["./src/**/*"]
 }

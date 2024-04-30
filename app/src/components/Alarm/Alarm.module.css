@@ -1,0 +1,12 @@
+.alarm{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.name{
+    color: grey;
+}
+.time{
+    font-size: 1.5em;
+}

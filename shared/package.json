@@ -8,9 +8,8 @@
     "/dist"
   ],
   "scripts": {
-    "prebuild": "npm i && (tsc > /dev/null || true)",
-    "build": "tsc -b",
-    "dev": "tsc -b -w"
+    "build": "tsc",
+    "dev": "tsc -w"
   },
   "devDependencies": {
     "@types/node": "^20.2.5",
