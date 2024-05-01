@@ -1,23 +1,10 @@
 import { useQuery } from "react-query";
+import { Alarm } from "shared/Alarm";
+import getAPI from "../services/api";
 
 export const useAlarms = () =>
-  useQuery(["alarms"], async () => {
-    return [
-      {
-        id: 1,
-        name: "Réveil",
-        time: "08:00",
-        active: true,
-      },
-      {
-        id: 2,
-        time: "13:00",
-        active: false,
-      },
-      {
-        id: 3,
-        time: "14:00",
-        active: true,
-      },
-    ];
+  useQuery(["alarms"], async (): Promise<Alarm[]> => {
+    const api = await getAPI();
+    const { data } = await api.get<Alarm[]>("/alarms");
+    return data;
   });

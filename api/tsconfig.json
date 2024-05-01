@@ -12,9 +12,7 @@
     "resolveJsonModule": true,
     "lib": ["es2015"],
     "rootDir": "./",
-    "skipLibCheck": true,
-    "composite": true
+    "skipLibCheck": true
   },
-  "include": ["./src/**/*"],
-  "exclude": ["./src/setup/functionAppService.js"]
+  "include": ["./src/**/*"]
 }

@@ -29,7 +29,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}/api",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["start"],
+      "runtimeArgs": ["run", "dev"],
       "console": "integratedTerminal"
     },
     {

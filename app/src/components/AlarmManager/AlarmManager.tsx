@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import style from "./AlarmManager.module.css";
 import { useAlarms } from "../../hooks/alarm";
 import Alarm from "../Alarm/Alarm";
@@ -6,12 +6,30 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { useNow } from "../../hooks/time";
 import NewAlarmModal from "./NewAlarmModal";
+import { Alarm as AlarmType } from "shared/Alarm";
+import getAPI from "../../services/api";
 
 const AlarmManager = () => {
-  const { data: alarms } = useAlarms();
+  const { data: alarms, refetch } = useAlarms();
   const now = useNow();
 
-  const nextAlarm = alarms?.filter((alarm) => alarm.active).sort((a, b) => dayjs(a.time, "HH:mm").diff(dayjs(b.time, "HH:mm")))[0];
+  const activeAlarms = useMemo(
+    () => alarms?.filter((alarm) => alarm.active).sort((a, b) => dayjs(a.time, "HH:mm").diff(dayjs(b.time, "HH:mm"))) || [],
+    [alarms],
+  );
+
+  const inactiveAlarms = useMemo(
+    () => alarms?.filter((alarm) => !alarm.active).sort((a, b) => dayjs(a.time, "HH:mm").diff(dayjs(b.time, "HH:mm"))) || [],
+    [alarms],
+  );
+
+  const nextAlarm: AlarmType | null = activeAlarms.filter((alarm) => dayjs(alarm.time, "HH:mm").isAfter(now))[0] || activeAlarms[0] || null;
+
+  async function setActive(id: AlarmType["id"], active: boolean) {
+    const api = await getAPI();
+    await api.patch(`/alarms/${id}`, { active });
+    refetch();
+  }
 
   return (
     <div className={style.container}>
@@ -21,40 +39,48 @@ const AlarmManager = () => {
         </h2>
         <NewAlarmModal />
       </div>
-      {(alarms?.some((alarm) => alarm.active) ?? null) && (
+      {(activeAlarms.length || null) && (
         <div className={style.active_alarms}>
           <div className={style.active_header}>
             {nextAlarm && (
-              <span
-                style={{
-                  color: "grey",
-                }}
-              >
+              <span>
                 Next in <strong>{dayjs(nextAlarm.time, "HH:mm").from(now, true)}</strong>
               </span>
             )}
           </div>
           <div className={style.list}>
-            {alarms
-              ?.filter((alarm) => alarm.active)
-              .sort((a, b) => dayjs(a.time, "HH:mm").diff(dayjs(b.time, "HH:mm")))
-              .map((alarm) => <Alarm key={alarm.id} alarm={alarm} />)}
+            {activeAlarms.map((alarm) => (
+              <Alarm
+                key={alarm.id}
+                alarm={alarm}
+                setActive={async (active) => {
+                  await setActive(alarm.id, active);
+                }}
+              />
+            ))}
           </div>
         </div>
       )}
-      <div
-        style={{
-          marginTop: "1em",
-        }}
-      >
-        <h2 style={{ fontSize: "1em", color: "grey" }}>Disabled</h2>
-        <div className={style.inactive_alarms}>
-          {alarms
-            ?.filter((alarm) => !alarm.active)
-            .sort((a, b) => dayjs(a.time, "HH:mm").diff(dayjs(b.time, "HH:mm")))
-            .map((alarm) => <Alarm key={alarm.id} alarm={alarm} />)}
+      {(inactiveAlarms.length || null) && (
+        <div
+          style={{
+            marginTop: "1em",
+          }}
+        >
+          <h2 style={{ fontSize: "1em", color: "grey" }}>Disabled</h2>
+          <div className={style.inactive_alarms}>
+            {inactiveAlarms.map((alarm) => (
+              <Alarm
+                key={alarm.id}
+                alarm={alarm}
+                setActive={async (active) => {
+                  await setActive(alarm.id, active);
+                }}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
