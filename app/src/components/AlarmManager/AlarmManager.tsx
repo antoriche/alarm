@@ -31,57 +31,76 @@ const AlarmManager = () => {
     refetch();
   }
 
+  async function deleteAlarm(id: AlarmType["id"]) {
+    const api = await getAPI();
+    await api.delete(`/alarms/${id}`);
+    refetch();
+  }
+
   return (
-    <div className={style.container}>
-      <div className={style.header}>
-        <h2>
-          <ClockCircleOutlined style={{ marginRight: "0.5em" }} /> Alarms
-        </h2>
-        <NewAlarmModal />
+    <>
+      <div className={style.container}>
+        <div className={style.header}>
+          <h2>
+            <ClockCircleOutlined style={{ marginRight: "0.5em" }} /> Alarms
+          </h2>
+          <NewAlarmModal />
+        </div>
+        {(activeAlarms.length || null) && (
+          <div className={style.active_alarms}>
+            <div className={style.active_header}>
+              {nextAlarm && (
+                <span>
+                  Next in{" "}
+                  <strong>
+                    {dayjs(nextAlarm.time, "HH:mm")
+                      .add(dayjs(nextAlarm.time, "HH:mm").isBefore(now) ? 1 : 0, "day")
+                      .from(now, true)}
+                  </strong>
+                </span>
+              )}
+            </div>
+            <div className={style.list}>
+              {activeAlarms.map((alarm) => (
+                <Alarm
+                  key={alarm.id}
+                  alarm={alarm}
+                  setActive={async (active) => {
+                    await setActive(alarm.id, active);
+                  }}
+                  onDelete={async () => {
+                    await deleteAlarm(alarm.id);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {(inactiveAlarms.length || null) && (
+          <div
+            style={{
+              marginTop: "1em",
+            }}
+          >
+            <h2 style={{ fontSize: "1em", color: "grey" }}>Disabled</h2>
+            <div className={style.inactive_alarms}>
+              {inactiveAlarms.map((alarm) => (
+                <Alarm
+                  key={alarm.id}
+                  alarm={alarm}
+                  setActive={async (active) => {
+                    await setActive(alarm.id, active);
+                  }}
+                  onDelete={async () => {
+                    await deleteAlarm(alarm.id);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-      {(activeAlarms.length || null) && (
-        <div className={style.active_alarms}>
-          <div className={style.active_header}>
-            {nextAlarm && (
-              <span>
-                Next in <strong>{dayjs(nextAlarm.time, "HH:mm").from(now, true)}</strong>
-              </span>
-            )}
-          </div>
-          <div className={style.list}>
-            {activeAlarms.map((alarm) => (
-              <Alarm
-                key={alarm.id}
-                alarm={alarm}
-                setActive={async (active) => {
-                  await setActive(alarm.id, active);
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      {(inactiveAlarms.length || null) && (
-        <div
-          style={{
-            marginTop: "1em",
-          }}
-        >
-          <h2 style={{ fontSize: "1em", color: "grey" }}>Disabled</h2>
-          <div className={style.inactive_alarms}>
-            {inactiveAlarms.map((alarm) => (
-              <Alarm
-                key={alarm.id}
-                alarm={alarm}
-                setActive={async (active) => {
-                  await setActive(alarm.id, active);
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

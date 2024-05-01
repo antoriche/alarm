@@ -1,13 +1,15 @@
 import React from "react";
 import { Alarm as AlarmType } from "shared/Alarm";
 import style from "./Alarm.module.css";
-import { ConfigProvider, Switch } from "antd";
+import { Button, ConfigProvider, Switch } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
 type AlarmProps = {
   alarm: AlarmType;
   setActive?: (active: boolean) => void;
+  onDelete?: () => void;
 };
-const Alarm: React.FC<AlarmProps> = ({ alarm, setActive }) => {
+const Alarm: React.FC<AlarmProps> = ({ alarm, setActive, onDelete }) => {
   return (
     <div className={style.alarm}>
       <div>
@@ -15,7 +17,15 @@ const Alarm: React.FC<AlarmProps> = ({ alarm, setActive }) => {
         {"  "}
         {alarm.name && <small className={style.name}>{alarm.name}</small>}
       </div>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1em",
+        }}
+      >
+        {!alarm.active && <Button type="link" danger onClick={onDelete} icon={<DeleteOutlined />} />}
+
         <ConfigProvider
           theme={{
             token: {

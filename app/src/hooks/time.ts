@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 /**
@@ -18,4 +19,22 @@ export const useNow = (): Date => {
   }, []);
 
   return currentTime;
+};
+
+export const useToday = (): Date => {
+  const [today, setToday] = useState<Date>(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newDate = new Date();
+      if (!dayjs(newDate).isSame(today, "day")) {
+        setToday(newDate);
+      }
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return dayjs(today).startOf("day").toDate();
 };

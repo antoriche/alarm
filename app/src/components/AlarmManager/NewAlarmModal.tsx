@@ -2,11 +2,15 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal, Row, TimePicker } from "antd";
 import React from "react";
 import { Alarm } from "shared/Alarm";
+import getAPI from "../../services/api";
+import { useAlarms } from "../../hooks/alarm";
 
 type NewAlarmModalProps = {};
 const NewAlarmModal: React.FC<NewAlarmModalProps> = ({}) => {
+  const [submitting, setSubmitting] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [form] = Form.useForm<Partial<Omit<Alarm, "id" | "active">>>();
+  const { refetch } = useAlarms();
 
   return (
     <>
@@ -14,8 +18,19 @@ const NewAlarmModal: React.FC<NewAlarmModalProps> = ({}) => {
         <Form
           form={form}
           onFinish={async (values) => {
-            await form.validateFields();
-            console.log(values);
+            setSubmitting(true);
+            try {
+              await form.validateFields();
+              const api = await getAPI();
+              await api.post("/alarms", { ...values });
+              form.resetFields();
+              refetch();
+              setOpen(false);
+            } catch (e) {
+              console.error(e);
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           <Form.Item label="Name" name="name">
@@ -35,7 +50,7 @@ const NewAlarmModal: React.FC<NewAlarmModalProps> = ({}) => {
             <TimePicker format="HH:mm" allowClear={false} needConfirm={false} showNow={false} />
           </Form.Item>
           <Row justify="end">
-            <Button type="primary" htmlType="submit" onClick={() => form.submit()}>
+            <Button type="primary" htmlType="submit" loading={submitting}>
               Create
             </Button>
           </Row>

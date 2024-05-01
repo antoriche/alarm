@@ -1,62 +1,59 @@
 import express from "express";
-import { Alarm } from "shared/alarm";
-
-const alarms: Alarm[] = [
-  {
-    id: 1,
-    name: "Réveil",
-    time: "08:00",
-    active: true,
-  },
-  {
-    id: 2,
-    time: "13:00",
-    active: false,
-  },
-  {
-    id: 3,
-    time: "14:00",
-    active: true,
-  },
-];
+import { Alarm as AlarmType } from "shared/alarm";
+import { Alarm } from "../models/Alarm";
 
 const router = express.Router();
 
-router.get("/", function (req, res) {
+router.get("/", async (req, res) => {
+  const alarms = await Alarm.findAll();
+
   res.status(200).json(alarms);
 });
 
-router.delete("/:id", function (req, res) {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  const alarmIndex = alarms.findIndex((alarm) => alarm.id === Number(id));
-  if (alarmIndex === -1) {
-    res.status(404).send("Alarm not found");
+  const existing = await Alarm.findByPk(Number(id));
+  if (!existing) {
+    res.status(404).json({
+      error: "Alarm not found",
+    });
     return;
   }
-
-  alarms.splice(alarmIndex, 1);
-  res.status(204).send(alarms[alarmIndex]);
+  await Alarm.destroy({ where: { id: Number(id) } });
+  res.status(204).json(existing);
 });
 
-router.post("/", function (req, res) {
-  const alarm = req.body as Alarm;
+router.post("/", async (req, res) => {
+  const alarm = req.body as AlarmType;
   if (!alarm.time) {
-    res.status(400).send("time property is required");
+    res.status(400).json({
+      error: "time property is required",
+    });
     return;
   }
+
+  const newAlarm = await Alarm.create(alarm);
+
+  res.status(201).json(newAlarm);
 });
 
-router.patch("/:id", function (req, res) {
+router.patch("/:id", async (req, res) => {
   const { id } = req.params;
-  const alarm = req.body as Alarm;
-  const alarmIndex = alarms.findIndex((alarm) => alarm.id === Number(id));
-  if (alarmIndex === -1) {
-    res.status(404).send("Alarm not found");
+  const newProps = req.body as Partial<AlarmType>;
+
+  const existing = await Alarm.findByPk(Number(id));
+  if (!existing) {
+    res.status(404).json({
+      error: "Alarm not found",
+    });
     return;
   }
 
-  alarms[alarmIndex] = { ...alarms[alarmIndex], ...alarm };
-  res.status(200).json(alarms[alarmIndex]);
+  await Alarm.update(newProps, { where: { id: Number(id) } });
+
+  const updated = await Alarm.findByPk(Number(id));
+
+  res.status(200).json(updated);
 });
 
 export default router;
