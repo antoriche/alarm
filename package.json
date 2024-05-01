@@ -6,7 +6,7 @@
   "scripts": {
     "test": "(cd app && npm run test) && (cd api && npx npm run test)",
     "install": "(cd api && npm install) && (cd app && npm install) && (cd shared && npm install)",
-    "start": "(cd shared && npx ttab npm run dev) && (cd api && npx ttab npm start) & (cd app && npx ttab npm start)",
+    "start": "(cd shared && npm run dev) & (cd api && npm start) & (cd app && npm start)",
     "clean": "(cd shared && rm -rf node_modules && rm -rf dist) && (cd api && rm -rf node_modules) && (cd app && rm -rf node_modules) && npm i"
   },
   "devDependencies": {

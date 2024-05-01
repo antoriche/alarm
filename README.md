@@ -14,14 +14,15 @@ The project is requested to use typescript, react as well as a node backend and 
 
 ### 💻 Run the project
 
-Run `npm start` in the root folder
-you can also press F5 in vscode
+To start working on the project, press F5 in vscode
 
 The project run in 3 processes:
 
 1. `cd shared ; npm run dev` transpile typescript from shared resources
 2. `cd api ; npm start` run the api
 3. `cd app ; npm start` run the app
+
+If you are not using vscode, you can run thoses commands manually in 3 different terminals
 
 ### 🗼 Architecture
 
