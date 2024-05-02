@@ -80,6 +80,12 @@ update an alarm - used to activate/deactivate an alarm
   - As many devices could run the application simultaneously, would probably need user management
   - Didn't pay attention to potential timezone issues if the client is not in the same timezone as the server
 
+- Could implement optimistic updates  
+   Currently, create/update/delete alarms need to refetch the whole list after change.  
+   Frontend should be able to update the state by itself if the api call succeed  
+   This can be achieved by using a state manager, as redux or zustand (rect-query can also handle this)  
+   Actions can set this state, and revert changes if the api call fail
+
 - Alarms are always daily recurring, there are no one-time or day-based alarms
 - User don't have the possibility to set the ringtone
 
