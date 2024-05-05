@@ -3,7 +3,17 @@
 The project consist in a simple alarm application, displaying current time and allowing user to manage alarms.  
 The project is requested to use typescript, react as well as a node backend and must have persisted data.
 
-## 📄 Description
+## 📄 Solution
+
+![Screenshot](./screenshot.png?raw=true)
+
+The solution is divided in 2 sections: on the left a clock displaying the current time, and on the right a list of alarms. Active alarms are highlighted in the top of the list.
+
+User can create a new alarm by clicking on the "+ New Alarm" button, indicating the time and optionally a label. Alarms are active by default.
+
+User can activate/desactivate an alarm using the switch on the right. Once the alarm is inactivate, it can be deleted by clicking on the trash icon.
+
+When an alarm is triggered, a ringtone is played, device vibrate and a modal is informing the user. A "Dismiss" button turns the alarm off.
 
 ## 🧭 Getting started
 
