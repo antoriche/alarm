@@ -1,7 +1,7 @@
-# ⏰ Alarm project - Volta medical interview
+# ⏰ Alarm project
 
 The project consist in a simple alarm application, displaying current time and allowing user to manage alarms.  
-The project is requested to use typescript, react as well as a node backend and must have persisted data.
+The project is using typescript, react as well as a node backend and have sqlite persisted data.
 
 ## 📄 Solution
 
